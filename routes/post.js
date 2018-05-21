@@ -30,6 +30,18 @@ router.post("/", function(req, res, next) {
         })
 });
 
+router.delete("/:postId", function(req, res) {
+    console.log(req.params.postId)
+    const postId = Number(req.params.postId);
+    if (isNaN(postId))
+        res.status(400).send();
 
+    dataBaseConnection.query(querys.DELETE_POST, [postId])
+        .then(databaseResponse => res.status(200).json(databaseResponse.rows[0]))
+        .catch((e) => {
+            console.error(e)
+            res.status(500).send()
+        });
+});
 
 module.exports = router;
