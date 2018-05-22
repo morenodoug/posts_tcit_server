@@ -9,10 +9,11 @@ router.get("/", function(req, res, next) {
         .then(databaseResponse => {
             res.status(200).json(databaseResponse.rows);
         })
-        .catch(e => res.status(500))
+        .catch(e => res.status(500).send())
 });
 
 router.post("/", function(req, res, next) {
+    console.log(req.body)
     if (typeof req.body.postName === "undefined")
         res.status(400).json({ error: "suministre nombre del post" })
 
@@ -22,7 +23,7 @@ router.post("/", function(req, res, next) {
     const postInformation = [req.body.postName, req.body.postDescription];
     dataBaseConnection.query(querys.INSERT_POST, postInformation)
         .then(databaseResponse => {
-            res.status(201).json(databaseResponse.rows);
+            res.status(201).json(databaseResponse.rows[0]);
         })
         .catch((e) => {
             console.error(e);
